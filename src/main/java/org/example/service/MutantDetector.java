@@ -40,42 +40,42 @@ public class MutantDetector {
     private boolean verificarSecuencias(char[][] matriz, int n) {
         int contadorSecuencias = 0;
 
-        for (int i = 0; i < n; i++){
-            for(int j = 0; j < n; i++){
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
 
-                //Horizontal
-                if (j <= n - LONGITUD_SECUENCIA){
-                    if (checkHorizontal(matriz, i, j)){
+                // 1. HORIZONTAL
+                // ¡CUIDADO! Este IF es el que evita el IndexOutOfBounds
+                if (j <= n - LONGITUD_SECUENCIA) {
+                    if (checkHorizontal(matriz, i, j)) {
                         contadorSecuencias++;
-                        if (contadorSecuencias>1)
+                        if (contadorSecuencias > 1)
                             return true;
                     }
                 }
 
-                //Vertical
-                if (i<= n - LONGITUD_SECUENCIA){
-                    if (checkVertical(matriz, i, j)){
+                // 2. VERTICAL
+                if (i <= n - LONGITUD_SECUENCIA) {
+                    if (checkVertical(matriz, i, j)) {
                         contadorSecuencias++;
-                        if (contadorSecuencias>1){
-                            return true;
-                        }
-                    }
-                }
-
-                //Diagonal principal
-                if(i<= n - LONGITUD_SECUENCIA && j <= n - LONGITUD_SECUENCIA){
-                    if(checkDiagonal(matriz, i, j)){
-                        contadorSecuencias++;
-                        if(contadorSecuencias>1)
+                        if (contadorSecuencias > 1)
                             return true;
                     }
                 }
 
-                //Diagonal inversa
-                if (i>= LONGITUD_SECUENCIA -1 && j<=n-LONGITUD_SECUENCIA){
-                    if(checkDiagonalInversa(matriz, i, j)){
+                // 3. DIAGONAL PRINCIPAL
+                if (i <= n - LONGITUD_SECUENCIA && j <= n - LONGITUD_SECUENCIA) {
+                    if (checkDiagonal(matriz, i, j)) {
                         contadorSecuencias++;
-                        if (contadorSecuencias>1)
+                        if (contadorSecuencias > 1)
+                            return true;
+                    }
+                }
+
+                // 4. DIAGONAL INVERSA
+                if (i >= LONGITUD_SECUENCIA - 1 && j <= n - LONGITUD_SECUENCIA) {
+                    if (checkDiagonalInversa(matriz, i, j)) {
+                        contadorSecuencias++;
+                        if (contadorSecuencias > 1)
                             return true;
                     }
                 }
