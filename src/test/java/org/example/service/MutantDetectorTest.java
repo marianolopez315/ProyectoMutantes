@@ -47,11 +47,11 @@ public class MutantDetectorTest {
     @DisplayName("NO debe detectar mutante si solo hay una secuencia")
     void testHumanWithOneSequence() {
         String[] dna = {
-                "AAAATC", // 1. Única secuencia: AAAA horizontal
+                "AAAATC", // Una sola secuencia, no basta para que sea MUTANTE
                 "AAGTGC",
                 "TCATGT",
                 "AGACGG",
-                "CCCTTA", // Me aseguré de romper el CCCC de la fila 4
+                "CCCTTA",
                 "TCACTG"
         };
         assertFalse(mutantDetector.isMutant(dna), "Humano con solo una secuencia debería retornar false");
