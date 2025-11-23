@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.entity.DnaRecord;
 import org.example.repository.DnaRecordRepository;
+import org.example.dto.StatsResponse;
 import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -62,4 +63,23 @@ public class MutantService {
             throw new RuntimeException("Error al calcular hash SHA-256", e);
         }
     }
+    public StatsResponse getStats() {
+        // 1. Consultamos a la BD usando los métodos del Repositorio
+        long countMutant = dnaRecordRepository.countByIsMutant(true);
+        long countHuman = dnaRecordRepository.countByIsMutant(false);
+
+        double ratio = 0.0;
+
+        // 2. Calculamos el ratio (evitando dividir por cero)
+        if (countHuman > 0) {
+            ratio = (double) countMutant / countHuman;
+        } else if (countMutant > 0) {
+            // Si hay mutantes pero 0 humanos, el ratio es infinito o igual a la cantidad
+            ratio = (double) countMutant;
+        }
+
+        // 3. Retornamos el objeto DTO con los datos
+        return new StatsResponse(countMutant, countHuman, ratio);
+    }
 }
+

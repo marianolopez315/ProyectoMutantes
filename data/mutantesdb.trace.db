@@ -1,0 +1,7 @@
+2025-11-23 13:02:24.335405-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "dna_records" not found (candidates are: "DNA_RECORDS"); SQL statement:
+SELECT * FROM "dna_records" [42103-224]
+2025-11-23 13:02:48.099572-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]DNA_HASH"; se esperaba "DELETE, DROP"
+Syntax error in SQL statement "[*]DNA_HASH"; expected "DELETE, DROP"; SQL statement:
+DNA_HASH [42001-224]
