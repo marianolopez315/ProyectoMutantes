@@ -17,19 +17,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MutantController.class) // Probamos SOLO el controlador
+@WebMvcTest(MutantController.class) //Probamos SOLO el controlador
 class MutantControllerTest {
 
     @Autowired
-    private MockMvc mockMvc; // Simula el navegador/Postman
+    private MockMvc mockMvc; //Simula el navegador/Postman
 
     @MockBean
-    private MutantService mutantService; // Simulamos el servicio (ya lo probamos antes)
+    private MutantService mutantService; //Simulamos el servicio (ya lo probamos antes)
 
     @Test
     @DisplayName("POST /mutant: Retorna 200 OK si es mutante")
     void testCheckMutantReturn200() throws Exception {
-        // Simulamos que el servicio responde TRUE (Es Mutante)
+        //Simulamos que el servicio responde TRUE (Es Mutante)
         when(mutantService.analyzeDna(any())).thenReturn(true);
 
         String jsonRequest = "{\"dna\":[\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTA\",\"TCACTG\"]}";
@@ -43,7 +43,7 @@ class MutantControllerTest {
     @Test
     @DisplayName("POST /mutant: Retorna 403 Forbidden si es humano")
     void testCheckMutantReturn403() throws Exception {
-        // Simulamos que el servicio responde FALSE (Es Humano)
+        //Simulamos que el servicio responde FALSE (Es Humano)
         when(mutantService.analyzeDna(any())).thenReturn(false);
 
         String jsonRequest = "{\"dna\":[\"GTGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCTTA\",\"TCACTG\"]}";
@@ -51,13 +51,13 @@ class MutantControllerTest {
         mockMvc.perform(post("/mutant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
-                .andExpect(status().isForbidden()); // Esperamos HTTP 403
+                .andExpect(status().isForbidden()); //Esperamos HTTP 403
     }
 
     @Test
     @DisplayName("POST /mutant: Retorna 400 Bad Request si el ADN es inválido (vacío)")
     void testCheckMutantInvalidInput() throws Exception {
-        // Enviamos un JSON con array vacío para activar la validación @NotEmpty del DTO
+        //Enviamos un JSON con array vacío para activar la validación @NotEmpty del DTO
         String jsonRequest = "{\"dna\":[]}";
 
         mockMvc.perform(post("/mutant")
@@ -69,7 +69,7 @@ class MutantControllerTest {
     @Test
     @DisplayName("GET /stats: Retorna estadísticas correctamente")
     void testGetStats() throws Exception {
-        // Preparamos una respuesta simulada
+        //Preparamos una respuesta simulada
         StatsResponse mockStats = new StatsResponse(40, 100, 0.4);
         when(mutantService.getStats()).thenReturn(mockStats);
 
