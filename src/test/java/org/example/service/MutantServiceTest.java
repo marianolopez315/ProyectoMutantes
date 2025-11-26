@@ -17,36 +17,36 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // Habilita Mockito
+@ExtendWith(MockitoExtension.class) //Habilita Mockito
 class MutantServiceTest {
 
     @Mock
-    private MutantDetector mutantDetector; // Simulamos el detector (no ejecuta código real)
+    private MutantDetector mutantDetector; //Simulamos el detector (no ejecuta código real)
 
     @Mock
-    private DnaRecordRepository dnaRecordRepository; // Simulamos la BD (no conecta de verdad)
+    private DnaRecordRepository dnaRecordRepository; //Simulamos la BD (no conecta de verdad)
 
     @InjectMocks
-    private MutantService mutantService; // Esta es la clase REAL que vamos a probar
+    private MutantService mutantService; //Esta es la clase REAL que vamos a probar
 
     @Test
     @DisplayName("Si el ADN es nuevo y Mutante: debe detectar, guardar y devolver true")
     void testAnalyzeNewMutantDna() {
         String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
 
-        // 1. ARRANGE (Preparar simulaciones)
-        // Simulamos que NO existe en BD
+        //ARRANGE (Preparar simulaciones)
+        //Simulamos que NO existe en BD
         when(dnaRecordRepository.findByDnaHash(anyString())).thenReturn(Optional.empty());
-        // Simulamos que el detector dice "Es Mutante"
+        //Simulamos que el detector dice "Es Mutante"
         when(mutantDetector.isMutant(dna)).thenReturn(true);
 
-        // 2. ACT (Ejecutar)
+        //ACT (Ejecutar)
         boolean result = mutantService.analyzeDna(dna);
 
-        // 3. ASSERT (Verificar)
+        //ASSERT (Verificar)
         assertTrue(result);
 
-        // Verificamos que se haya llamado a guardar en BD
+        //Verificamos que se haya llamado a guardar en BD
         verify(dnaRecordRepository, times(1)).save(any(DnaRecord.class));
     }
 
@@ -55,9 +55,9 @@ class MutantServiceTest {
     void testAnalyzeNewHumanDna() {
         String[] dna = {"ATGCGA", "CAGTGC", "TTATTT", "AGACGG", "GCGTCA", "TCACTG"};
 
-        // Simulamos que NO existe en BD
+        //Simulamos que NO existe en BD
         when(dnaRecordRepository.findByDnaHash(anyString())).thenReturn(Optional.empty());
-        // Simulamos que el detector dice "Es Humano"
+        //Simulamos que el detector dice "Es Humano"
         when(mutantDetector.isMutant(dna)).thenReturn(false);
 
         boolean result = mutantService.analyzeDna(dna);
@@ -75,22 +75,22 @@ class MutantServiceTest {
         DnaRecord existingRecord = new DnaRecord("hash123", true);
         when(dnaRecordRepository.findByDnaHash(anyString())).thenReturn(Optional.of(existingRecord));
 
-        // ACT
+
         boolean result = mutantService.analyzeDna(dna);
 
-        // ASSERT
+
         assertTrue(result);
 
-        // ¡LA PRUEBA DE ORO! Verificamos que el detector NUNCA se ejecutó
+        //Verificamos que el detector NUNCA se ejecutó
         verify(mutantDetector, never()).isMutant(any());
-        // Verificamos que NO se intentó guardar de nuevo
+        //Verificamos que NO se intentó guardar de nuevo
         verify(dnaRecordRepository, never()).save(any());
     }
 
     @Test
     @DisplayName("Estadísticas: Debe calcular el ratio correctamente")
     void testGetStats() {
-        // Simulamos que la BD devuelve 40 mutantes y 100 humanos
+        //Simulamos que la BD devuelve 40 mutantes y 100 humanos
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(40L);
         when(dnaRecordRepository.countByIsMutant(false)).thenReturn(100L);
 
@@ -105,13 +105,13 @@ class MutantServiceTest {
     @DisplayName("Estadísticas: Debe manejar división por cero (0 humanos)")
     void testGetStatsDivisionByZero() {
         when(dnaRecordRepository.countByIsMutant(true)).thenReturn(10L);
-        when(dnaRecordRepository.countByIsMutant(false)).thenReturn(0L); // 0 humanos
+        when(dnaRecordRepository.countByIsMutant(false)).thenReturn(0L); //0 humanos
 
         StatsResponse stats = mutantService.getStats();
 
         assertEquals(10, stats.getCount_mutant_dna());
         assertEquals(0, stats.getCount_human_dna());
-        // Según nuestra lógica, si no hay humanos, el ratio es igual a los mutantes (o podrías definirlo como 0)
+        //Según nuestra lógica, si no hay humanos, el ratio es igual a los mutantes (o podrías definirlo como 0)
         assertEquals(10.0, stats.getRatio());
     }
 }

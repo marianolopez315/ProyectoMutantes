@@ -37,7 +37,7 @@ class MutantControllerTest {
         mockMvc.perform(post("/mutant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
-                .andExpect(status().isOk()); // Esperamos HTTP 200
+                .andExpect(status().isOk()); //Esperamos HTTP 200
     }
 
     @Test
@@ -63,7 +63,7 @@ class MutantControllerTest {
         mockMvc.perform(post("/mutant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
-                .andExpect(status().isBadRequest()); // Esperamos HTTP 400
+                .andExpect(status().isBadRequest()); //Esperamos HTTP 400
     }
 
     @Test

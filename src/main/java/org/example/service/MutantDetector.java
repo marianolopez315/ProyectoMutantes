@@ -23,7 +23,7 @@ public class MutantDetector {
                 return false; //puedo largar una excepcion aca
             }
 
-            // Convertimos la fila a char[] para meterla en la matriz
+            //Convertimos la fila a char[] para meterla en la matriz
             matriz[i] = fila.toCharArray();
 
             for (char c : matriz[i]) {
@@ -43,8 +43,7 @@ public class MutantDetector {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
 
-                // 1. HORIZONTAL
-                // ¡CUIDADO! Este IF es el que evita el IndexOutOfBounds
+                //HORIZONTAL
                 if (j <= n - LONGITUD_SECUENCIA) {
                     if (checkHorizontal(matriz, i, j)) {
                         contadorSecuencias++;
@@ -53,7 +52,7 @@ public class MutantDetector {
                     }
                 }
 
-                // 2. VERTICAL
+                //VERTICAL
                 if (i <= n - LONGITUD_SECUENCIA) {
                     if (checkVertical(matriz, i, j)) {
                         contadorSecuencias++;
@@ -62,7 +61,7 @@ public class MutantDetector {
                     }
                 }
 
-                // 3. DIAGONAL PRINCIPAL
+                //DIAGONAL PRINCIPAL
                 if (i <= n - LONGITUD_SECUENCIA && j <= n - LONGITUD_SECUENCIA) {
                     if (checkDiagonal(matriz, i, j)) {
                         contadorSecuencias++;
@@ -71,7 +70,7 @@ public class MutantDetector {
                     }
                 }
 
-                // 4. DIAGONAL INVERSA
+                //DIAGONAL INVERSA
                 if (i >= LONGITUD_SECUENCIA - 1 && j <= n - LONGITUD_SECUENCIA) {
                     if (checkDiagonalInversa(matriz, i, j)) {
                         contadorSecuencias++;

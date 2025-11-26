@@ -18,11 +18,11 @@ public class MutantDetectorTest {
     @DisplayName("Debe detectar mutante con secuencias horizontales y verticales")
     void testMutantHorizontalAndVertical() {
         String[] dna = {
-                "AAAAAA", // Horizontal
+                "AAAAAA", //Horizontal
                 "CAGTGC",
                 "TTATGT",
                 "AGAAGG",
-                "CCCCTA", // Horizontal
+                "CCCCTA", //Horizontal
                 "TCACTG"
         };
         assertTrue(mutantDetector.isMutant(dna), "Debería ser mutante por secuencias horizontales");
@@ -36,10 +36,9 @@ public class MutantDetectorTest {
                 "CAGTGC",
                 "TTATGT",
                 "AGAAGG",
-                "CCCCTA", // Horizontal
+                "CCCCTA", //Horizontal
                 "TCACTG"
         };
-        // Nota: Este caso específico del ejemplo tiene una diagonal (A-A-A-A) y una horizontal (C-C-C-C)
         assertTrue(mutantDetector.isMutant(dna), "Debería ser mutante por cruce de secuencias");
     }
 
@@ -47,7 +46,7 @@ public class MutantDetectorTest {
     @DisplayName("NO debe detectar mutante si solo hay una secuencia")
     void testHumanWithOneSequence() {
         String[] dna = {
-                "AAAATC", // Una sola secuencia, no basta para que sea MUTANTE
+                "AAAATC", //Una sola secuencia, no basta para que sea MUTANTE
                 "AAGTGC",
                 "TCATGT",
                 "AGACGG",
@@ -88,7 +87,7 @@ public class MutantDetectorTest {
                 "ATGCGA",
                 "CAGTGC",
                 "TTATGT",
-                "AGAXGG", // X es inválido
+                "AGAXGG", //X es inválido
                 "CCCCTA",
                 "TCACTG"
         };
@@ -101,7 +100,7 @@ public class MutantDetectorTest {
         String[] dna = {
                 "ATGCGA",
                 "CAGTGC",
-                "TTATGT" // Faltan filas para ser 6x6
+                "TTATGT" //Faltan filas para ser 6x6
         };
         assertFalse(mutantDetector.isMutant(dna), "Debería fallar si no es cuadrada");
     }
